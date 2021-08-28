@@ -1,0 +1,338 @@
+{% capture email_title %}
+Security check
+{% endcapture %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>{{ email_title }}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width">
+
+  <link rel="stylesheet" type="text/css" media="screen" href="/assets/admin/merchant_mailer/style.css">
+  <style data-premailer="ignore">
+    .button__cell {
+      background: {
+          {
+          shop.email_accent_color
+        }
+      }
+
+      ;
+    }
+
+    a,
+    a:hover,
+    a:active,
+    a:visited {
+      color: {
+          {
+          shop.email_accent_color
+        }
+      }
+
+      ;
+    }
+
+    @media print {
+      body {
+        color: black !important;
+      }
+
+      .subtitle-lines,
+      .subtotal-line__title,
+      .subtotal-line__value {
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .subtotal-table {
+        margin: 0 !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <table class="row">
+    <tr
+      class="mail-priority-indicator mail-priority-indicator--{% if fulfillment_aborted or has_high_risks? %}high{% else %}low{% endif %}">
+      <td></td>
+    </tr>
+  </table>
+  <table class="body">
+    <tr>
+      <td>
+        {% if fulfillment_aborted %}
+        <center>
+          <table class="row banner-container banner-alert__table">
+            <tr>
+              <td class="banner-alert__cell">
+                <img src="{{ 'mailer/merchant/critical_alert.png' | cdn_asset_url }}" alt="Critical Alert" width="20px">
+              </td>
+              <td class="banner-description__cell">
+                <strong class="banner-alert__title">Order was not fulfilled automatically</strong>
+                High risk of fraud detected. Before fulfilling this order or capturing payment, please review the the
+                Risk Analysis and determine if this order is fraudulent.
+              </td>
+            </tr>
+          </table>
+
+        </center>
+        {% endif %}
+        {% if has_high_risks? %}
+        <center>
+          <table class="row banner-container banner-alert__table">
+            <tr>
+              <td class="banner-alert__cell">
+                <img src="{{ 'mailer/merchant/critical_alert.png' | cdn_asset_url }}" alt="Critical Alert" width="20px">
+              </td>
+              <td class="banner-description__cell">
+                <strong class="banner-alert__title">High risk of fraud detected</strong>
+                Before fulfilling this order or capturing payment, please review the the Risk Analysis and determine if
+                this order is fraudulent.
+              </td>
+            </tr>
+          </table>
+
+        </center>
+        {% endif %}
+        <table class="row">
+          <tr>
+            <td class="section__cell">
+              <center>
+                <table class="container section">
+                  <tr>
+                    <td>
+
+                      <table class="row content">
+                        <tr>
+                          <td class="content__cell {% if no_top_border == 'hide_border' %}no_top__border{% endif %}">
+                            <center>
+                              <table class="container">
+                                <tr>
+                                  <td>
+
+                                    <table class="row">
+                                      <tr>
+                                        <td>
+                                          {% assign current_date = date | date: "%b %d" %}
+                                          {% assign current_time = date | date: "%l:%M %P" %}
+                                          {% if customer.name %}
+                                          Susan Rep placed order #1001 on August 23 at {{
+                                          current_time | strip }}.
+                                          {% else %}
+                                          Someone placed order {{ name }} on {{ current_date }} at 7:36 pm.
+                                          {% endif %}
+                                          <table class="row actions">
+                                            <tr>
+                                              <td class="empty-line"> </td>
+                                            </tr>
+                                            <tr>
+                                              <td class="actions__cell">
+                                                <table class="button main-action-cell">
+                                                  <tr>
+                                                    <td><a
+                                                        href="https://{{ shop.permanent_domain }}/admin/orders/{{ id }}"
+                                                        class="mail-button">View order</a></td>
+                                                  </tr>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </table>
+
+                                        </td>
+                                      </tr>
+                                    </table>
+
+                                  </td>
+                                </tr>
+                              </table>
+                            </center>
+                          </td>
+                        </tr>
+                      </table>
+                      <table class="row content">
+                        <tr>
+                          <td class="content__cell {% if no_top_border == 'hide_border' %}no_top__border{% endif %}">
+                            <center>
+                              <table class="container">
+                                <tr>
+                                  <td>
+
+                                    <strong class="order-list__summary-title">Order summary</strong>
+                                    <br>
+                                    <br>
+
+                                    <table class="row">
+                                      <tr class="order-list__item">
+                                        <td class="order-list__item__cell">
+                                          <table>
+                                            <td>
+                                              <img src="https://cdn.shopify.com/s/files/1/0529/3136/2984/products/2_compact_cropped.png?v=1623572522" align="left" width="60"
+                                                height="60" class="order-list__product-image" />
+                                            </td>
+                                            <td class="order-list__product-description-cell">
+                                              {% if line.quantity < line.quantity %} {% capture line_display %} {{
+                                                line.quantity }} of {{ line.quantity }} {% endcapture %} {% else %} {%
+                                                assign line_display=line.quantity %} {% endif %} <span
+                                                class="order-list__item-title">
+                                                KALLISTEI Gloss and Glow Sheet Mask
+                                                </span><br />
+
+                                                {% if line.quantity %}
+                                                {% if line.original_line_price != line.final_line_price %}
+                                                <span><del class="order-list__item-original-price">{{
+                                                    line.original_price | money }}</del></span>
+                                                {% endif %}
+
+                                                {% endif %}
+
+                                                <span>$35 × 2 </span><br />
+
+                                                {% if line.variant.title != 'Default Title' %}
+                                                <span class="order-list__item-variant">{{ line.variant.title }}</span>
+
+                                                {% if line.sku != blank %}
+                                                <span class="order-list__item-variant">• </span>
+                                                {% endif %}
+                                                {% endif %}
+
+                                                {% if line.sku != blank %}
+                                                <span class="order-list__item-variant">SKU: {{ line.sku }}</span>
+                                                {% endif %}
+
+                                                {% if line.selling_plan_allocation != nil %}
+                                                <p class="order-list__item-variant">{{
+                                                  line.selling_plan_allocation.selling_plan.name }}</p>
+                                                {% endif %}
+
+                                            </td>
+                                            <td class="order-list__price-cell">
+                                              <p class="order-list__item-price">
+                                                $70.00
+                                              </p>
+                                            </td>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </table>
+
+                                    <table class="row subtotal-lines">
+                                      <tr>
+                                        <td>
+
+                                          <table class="row subtotal-table subtotal-table--total">
+
+                                            <tr class="subtotal-line">
+                                              <td class="subtotal-line__title">
+                                                <p>
+                                                  {% if titleBold %}
+                                                  <span><strong>Total</strong></span>
+                                                  {% else %}
+                                                  <span>Total</span>
+                                                  {% endif %}
+                                                </p>
+                                              </td>
+                                              <td class="subtotal-line__value">
+                                                {% if valueBold %}
+                                                <strong>$70.00 AUD</strong>
+                                                {% else %}
+                                                $70.00 AUD
+                                                {% endif %}
+                                              </td>
+                                            </tr>
+
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </table>
+
+
+                                  </td>
+                                </tr>
+                              </table>
+                            </center>
+                          </td>
+                        </tr>
+                      </table>
+                      <table class="row content">
+                        <tr>
+                          <td class="content__cell {% if no_top_border == 'hide_border' %}no_top__border{% endif %}">
+                            <center>
+                              <table class="container">
+                                <tr>
+                                  <td>
+
+                                    {% if gateway %}
+                                    <table class="row">
+                                      <tr>
+                                        <td class="customer-info__item customer-info__item--last">
+                                          <strong>Payment processing method</strong>
+                                          <br>
+                                          <p>Visa</p>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                    {% endif %}
+                                    {% if requires_shipping and shipping_address %}
+                                    {% if shipping_methods.first %}
+                                    <br>
+                                    <table class="row">
+                                      <tr>
+                                        <td class="customer-info__item customer-info__item--last">
+                                          <strong>Delivery method</strong>
+                                          <br>
+                                          {% for shipping_method in shipping_methods %}
+                                          <p>Pick up</p>
+                                          {% endfor %}
+                                        </td>
+                                      </tr>
+                                    </table>
+                                    {% endif %}
+
+
+                                    {% endif %}
+
+                                  </td>
+                                </tr>
+                              </table>
+                            </center>
+                          </td>
+                        </tr>
+                      </table>
+
+                    </td>
+                  </tr>
+                </table>
+              </center>
+            </td>
+          </tr>
+        </table>
+        <footer class="no-print">
+          <br>
+          <table border="0" cellpadding="0" cellspacing="0" class="mail-footer">
+            <tbody>
+              <tr>
+                <td align="center" valign="bottom">
+                  <img src="{{ 'mailer/merchant/shopify_logo.png' | cdn_asset_url }}" alt="Shopify" width="89">
+                </td>
+              </tr>
+              <tr>
+                <td align="center">
+                  <p>© Shopify | <span class="apple-link">151 O'Connor Street, Ground floor, Ottawa, ON, K2P
+                      2L8</span></span></p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </footer>
+
+        <img class="no-print" src="{{ 'notifications/spacer.png' | shopify_asset_url }}" class="spacer" height="1" />
+
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>
