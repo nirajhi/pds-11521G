@@ -18,7 +18,7 @@ o [2.5 marks] Find min_2 (minimum distance of the above distances to blue sample
 • [– 10 marks] Algorithm is quite different from the given algorithm
 • [– 10 marks] There are no comments that explain your code
 
-![s](https://)
+![Solution](https://github.com/nirajhi/pds-11521G/blob/master/Assignment%201/Assignment1a.png)
 
 
 
